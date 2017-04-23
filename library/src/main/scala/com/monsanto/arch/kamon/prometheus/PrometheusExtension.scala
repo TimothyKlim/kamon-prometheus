@@ -12,13 +12,6 @@ import kamon.metric.TickMetricSnapshotBuffer
   *
   * ==Overview==
   *
-  * If all you need is a Spray route that you can add to your application, you
-  * do not need to use this module directly, just use the [[com.monsanto.arch.kamon.prometheus.spray.SprayEndpoint SprayEndpoint]]
-  * instead.
-  *
-  * However, if you are interested in manually handling the metrics collected by
-  * the module, read on.
-  *
   * ==Getting a reference to the module==
   *
   * Unless otherwise specified, this module will be auto-started by Kamon. As

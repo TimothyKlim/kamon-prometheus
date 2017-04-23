@@ -11,8 +11,8 @@ This library provides a Kamon module that can serve metrics to
 http://prometheus.io/[Prometheus], an open source service monitoring system and
 time series database.  Since Prometheus uses a scraping mechanism and its own
 data model, this module bridges the gap between the two.  It converts Kamon
-metrics into a Prometheus-friendly format and provides integrations for both
-Spray and Akka HTTP so that your application can serve metrics to Prometheus.
+metrics into a Prometheus-friendly format and provides integrations for
+Akka HTTP so that your application can serve metrics to Prometheus.
 
 Features
 --------
@@ -20,7 +20,7 @@ Features
 * Converts Kamon metrics data to conform to Prometheus’ data model, including:
 ** Reasonably handles all Kamon entities, including custom entities
 ** Preservation of units of measurement
-* Provides Spray and Akka HTTP route that supports:
+* Provides Akka HTTP route that supports:
 ** Both text and https://developers.google.com/protocol-buffers/[Protocol
    buffer] representation formats
 ** Optional gzip compression
@@ -53,7 +53,7 @@ resolvers += Resolver.jcenterRepo
 
 Kamon’s module loader should automatically detect the presence of
 _kamon-prometheus_ and start it.  However, in order to be useful, you will need
-to <<Usage,include the extension’s Spray or Akka HTTP routes somewhere in your
+to <<Usage,include the extension’s Akka HTTP routes somewhere in your
 service>> so that Prometheus can invoke it.
 
 
@@ -67,7 +67,6 @@ This module depends on:
 * https://github.com/typesafehub/config[Typesafe config]
 * https://developers.google.com/protocol-buffers/[Protocol buffers for Java]
 * http://akka.io[Akka HTTP] _(optional)_
-* http://spray.io/[Spray routing] _(optional)_
 * https://github.com/scala/scala-parser-combinators[Scala parser combinators] _(optional)_
 
 Additional dependencies are required if you are interested in
@@ -112,7 +111,6 @@ kamon.prometheus {
     akka-router      = [ "**" ]
     system-metric    = [ "**" ]
     http-server      = [ "**" ]
-    spray-can-server = [ "**" ]
   }
 ------------------------------------------------------------------------------
 
@@ -148,53 +146,19 @@ Usage
 
 There are currently three principal ways to use _kamon-prometheus_:
 
-1. Using the Spray endpoint
-2. Using the Akka HTTP endpoint
-3. Collecting metrics via an Actor
+1. Using the Akka HTTP endpoint
+2. Collecting metrics via an Actor
 
 Once you have made the metrics available, you will need to configure
 Prometheus to scrape your application.
 
-=== Using the Spray endpoint
-
-The module provides a Spray route which you can access via
-`SprayEndpoint(system).route` where `system` is an actor system.  You can
-place this route anywhere in your application, but keep in mind that Prometheus
-scrapes `/metrics` by default.  The following is the code for a minimal
-application that will serve metrics from `http://localhost:8888/metrics`:
-
-[source,scala]
-.A minimal Spray application
-------------------------------------------------------------------------------
-import akka.actor.ActorSystem
-import com.monsanto.arch.kamon.prometheus.spray.SprayEndpoint
-import spray.routing.SimpleRoutingApp
-
-object Main extends App with SimpleRoutingApp {
-  implicit val actorSystem = ActorSystem()
-
-  startServer("localhost", 8888) {
-    path("metrics") {
-      SprayEndpoint(actorSystem).route
-    }
-  }
-}
-------------------------------------------------------------------------------
-
-Note that the route will only respond to `GET` requests and will automatically
-handle compression and media type negotiation.  If there is no content yet
-(generally before the first set of metrics has been collected), the route will
-return a _No Content_ response (204).
 
 === Using the Akka HTTP endpoint
-
-Using the Akka HTTP endpoint is just like using the Spray endpoint above,
-except that you use a different Akka extension.
 
 [source,scala]
 .A minimal Akka HTTP application
 ------------------------------------------------------------------------------
-import akka.actor.ActorSystem
+import akka.actor.ActoorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer

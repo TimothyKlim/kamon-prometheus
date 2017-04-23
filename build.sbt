@@ -1,17 +1,16 @@
 import java.util.Date
 import sbtprotobuf.ProtobufPlugin
 
-val akkaVersion = "2.4.16"
-val akkaHttpVersion = "10.0.1"
-val sprayVersion = "1.3.4"
-val kamonVersion = "0.6.3"
+val akkaVersion = "2.5.0"
+val akkaHttpVersion = "10.0.5"
+val kamonVersion = "0.6.6"
 
 lazy val commonSettings = Seq(
   homepage := Some(url("https://monsantoco.github.io/kamon-prometheus")),
   organization := "com.monsanto.arch",
   organizationHomepage := Some(url("http://engineering.monsanto.org")),
   licenses := Seq("BSD New" → url("http://opensource.org/licenses/BSD-3-Clause")),
-  scalaVersion := "2.11.8",
+  scalaVersion := "2.12.2",
   scalacOptions ++= Seq(
     "-deprecation",
     "-unchecked",
@@ -20,8 +19,7 @@ lazy val commonSettings = Seq(
   resolvers += Resolver.jcenterRepo,
   apiMappingsScala ++= Map(
     ("com.typesafe.akka", "akka-actor") → "http://doc.akka.io/api/akka/%s",
-    ("com.typesafe.akka", "akka-http-experimental") → "http://doc.akka.io/api/akka/%s",
-    ("io.spray", "spray-routing") → "http://spray.io/documentation/1.1-SNAPSHOT/api/"
+    ("com.typesafe.akka", "akka-http-experimental") → "http://doc.akka.io/api/akka/%s"
   ),
   apiMappingsJava ++= Map(
     ("com.typesafe", "config") → "http://typesafehub.github.io/config/latest/api"
@@ -71,7 +69,6 @@ lazy val library = (project in file("library"))
     description := "Kamon module to export metrics to Prometheus",
     libraryDependencies ++= Seq(
       "io.kamon"               %% "kamon-core"               % kamonVersion,
-      "io.spray"               %% "spray-routing"            % sprayVersion     % "provided",
       "com.typesafe.akka"      %% "akka-actor"               % akkaVersion,
       "com.typesafe.akka"      %% "akka-http"                % akkaHttpVersion  % "provided",
       "com.typesafe"            % "config"                   % "1.3.1",
@@ -82,8 +79,7 @@ lazy val library = (project in file("library"))
       "com.typesafe.akka" %% "akka-slf4j"        % akkaVersion      % testConfigs,
       "com.typesafe.akka" %% "akka-testkit"      % akkaVersion      % "test",
       "org.scalatest"     %% "scalatest"         % "3.0.1"          % testConfigs,
-      "io.kamon"          %% "kamon-akka"        % kamonVersion     % "test",
-      "io.spray"          %% "spray-testkit"     % sprayVersion     % "test",
+      "io.kamon"          %% "kamon-akka-2.4"    % kamonVersion     % "test",
       "org.scalacheck"    %% "scalacheck"        % "1.13.4"         % "test"
     ),
     dependencyOverrides ++= Set(
@@ -113,10 +109,7 @@ lazy val demo = (project in file("demo"))
     name := "kamon-prometheus-demo",
     description := "Docker image containing a demonstration of kamon-prometheus in action.",
     libraryDependencies ++= Seq(
-      "io.kamon"          %% "kamon-spray"          % kamonVersion,
-      "io.kamon"          %% "kamon-system-metrics" % kamonVersion,
-      "io.spray"          %% "spray-can"            % sprayVersion,
-      "com.monsanto.arch" %% "spray-kamon-metrics"  % "0.1.3"
+      "io.kamon"          %% "kamon-system-metrics" % kamonVersion
     ),
     fork in run := true,
     javaOptions in run ++= { (AspectjKeys.weaverOptions in Aspectj).value },
