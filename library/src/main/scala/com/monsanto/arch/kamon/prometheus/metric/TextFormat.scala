@@ -19,8 +19,8 @@ object TextFormat extends SerialisationFormat[String] {
           case MetricValue.Counter(c) ⇒ Seq(formatLine(family.name, metric.labels, c, metric.timestamp))
           case MetricValue.Histogram(buckets, count, sum) ⇒
             buckets.map { bucket ⇒
-              formatLine(family.name, metric.labels + ("le" → formatValue(bucket.upperBound)), bucket.cumulativeCount,
-                metric.timestamp)
+              formatLine(family.name + "_bucket", metric.labels + ("le" → formatValue(bucket.upperBound)),
+                bucket.cumulativeCount, metric.timestamp)
             } ++ Seq(
               formatLine(family.name + "_count", metric.labels, count, metric.timestamp),
               formatLine(family.name + "_sum", metric.labels, sum, metric.timestamp)
@@ -225,7 +225,7 @@ object TextFormat extends SerialisationFormat[String] {
           val CountName = s"${name}_count"
           val foo =
           histogramGroups.map { case (labels, lines) ⇒
-            val (bucketLines, otherLines) = lines.span(_.name == name)
+            val (bucketLines, otherLines) = lines.span(_.name == name+"_bucket")
             val buckets = bucketLines.map { line ⇒
               MetricValue.Bucket(parseValue(line.labels("le")), line.value.toLong)
             }

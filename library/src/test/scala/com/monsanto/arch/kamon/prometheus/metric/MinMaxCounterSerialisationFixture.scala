@@ -40,9 +40,9 @@ trait MinMaxCounterSerialisationFixture {
   /** The snapshot as a string. */
   val snapshotString =
     s"""# TYPE $name histogram
-       |$name{$labelString,le="1.0"} 1.0 ${timestamp.millis}
-       |$name{$labelString,le="4.0"} 3.0 ${timestamp.millis}
-       |$name{$labelString,le="+Inf"} 3.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="1.0"} 1.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="4.0"} 3.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="+Inf"} 3.0 ${timestamp.millis}
        |${name}_count{$labelString} 3.0 ${timestamp.millis}
        |${name}_sum{$labelString} 9.0 ${timestamp.millis}
        |""".stripMargin
