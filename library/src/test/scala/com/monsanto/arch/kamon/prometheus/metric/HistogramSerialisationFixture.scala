@@ -40,9 +40,9 @@ trait HistogramSerialisationFixture {
   /** The snapshot as a string. */
   val snapshotString =
     s"""# TYPE $name histogram
-       |$name{$labelString,le="1.0"} 5.0 ${timestamp.millis}
-       |$name{$labelString,le="4.0"} 7.0 ${timestamp.millis}
-       |$name{$labelString,le="+Inf"} 7.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="1.0"} 5.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="4.0"} 7.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="+Inf"} 7.0 ${timestamp.millis}
        |${name}_count{$labelString} 7.0 ${timestamp.millis}
        |${name}_sum{$labelString} 13.0 ${timestamp.millis}
        |""".stripMargin

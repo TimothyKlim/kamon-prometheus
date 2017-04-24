@@ -45,11 +45,11 @@ trait GaugeSerialisationFixture {
   /** The snapshot as a string. */
   val snapshotString =
     s"""# TYPE $name histogram
-       |$name{$labelString,le="1.0"} 2.0 ${timestamp.millis}
-       |$name{$labelString,le="4.0"} 4.0 ${timestamp.millis}
-       |$name{$labelString,le="6.0"} 5.0 ${timestamp.millis}
-       |$name{$labelString,le="7.0"} 6.0 ${timestamp.millis}
-       |$name{$labelString,le="+Inf"} 6.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="1.0"} 2.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="4.0"} 4.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="6.0"} 5.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="7.0"} 6.0 ${timestamp.millis}
+       |${name}_bucket{$labelString,le="+Inf"} 6.0 ${timestamp.millis}
        |${name}_count{$labelString} 6.0 ${timestamp.millis}
        |${name}_sum{$labelString} 23.0 ${timestamp.millis}
        |""".stripMargin
